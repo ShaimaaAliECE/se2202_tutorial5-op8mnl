@@ -1,8 +1,9 @@
 let nextPlayer = 'X'; // takes a value of either 'X' or 'O' according to the game turns
 
 //initialize the game
-
+var table = document.getElementById('gameboard');
 // use the value stored in the nextPlayer variable to indicate who the next player is
+document.getElementById("next-lbl").innerHTML = nextPlayer;
 
 
 //This call will create the buttons needed for the gameboard.
@@ -10,8 +11,17 @@ createGameBoard()
 
 function createGameBoard()
 {
+    
     // Programatically add a button with square brackets enclosing an empty space to each cell in the gameboard
-   
+    
+    for (let i = 0 ; i < 9; i++){
+        let cell = 'c' + (i+1);
+        var btn = document.createElement('button');
+        btn.innerHTML = '[ ]';
+        document.getElementById(cell).appendChild(btn);
+        
+    }
+    
 }
 
 // Programatically add 'takeCell' as an event listener to all the buttons on the board
@@ -27,12 +37,24 @@ function takeCell(event)
     /*
         When the button is clicked, the space inside its square brackets is replaced by the value in the nextPlayer before switching it
     */
+    if (nextPlayer == 'X'){
+        event.target.innerHTML = '[X]';
+        event.target.disabled = true;
+        nextPlayer  = 'O';
+        document.getElementById("next-lbl").innerHTML = nextPlayer;
 
+    }else {
+        event.target.innerHTML = '[O]';
+        event.target.disabled = true;
+        nextPlayer = 'X';
+        document.getElementById("next-lbl").innerHTML = nextPlayer;
+    }
     // Make sure the button is clickable only once (I didn't mention how to do that, look it up :) )
 
     // Check if the game is over
-    if (isGameOver())
+    if (isGameOver()==true)
     {
+        document.getElementById("game-over-lbl").innerHTML = "<h1> Game Over </h1>";
         // let the lable with the id 'game-over-lbl' display the words 'Game Over' inside <h1> element
     }
 
@@ -41,6 +63,19 @@ function takeCell(event)
 
 function isGameOver()
 {
+    let count =0;
+    for (let i = 0 ; i < 9 ; i++){
+        if(btns[i].disabled== true){
+            count++;
+        }
+        else{
+            return false
+        }
+    }
+    if (count == 9){
+        return true;
+    }
     // This function returns true if all the buttons are disabled and false otherwise 
    
 }
+
